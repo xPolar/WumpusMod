@@ -52,4 +52,4 @@ async def on_command_error(ctx, error):
         raise error
 
 #Starts bot
-bot.run("NTk2NTMyNzQ0MjE4MjE0NDAy.XR66bw.k8cb5coY7bP1Hr7vzf-dc9RIN4g")
+bot.run("TOKEN")
