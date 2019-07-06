@@ -3,6 +3,8 @@ WumpusMod moderation bot with a ticket system, prefix is ``w!``.
 # Commands
 **Moderation**
 
+``w!help`` - Help command
+
 | Command | Description | Permission Required |
 | ------- | ----------- | ------------------- |
 | Purge | Deletes a large amount of messages | Manage Message(s) |
