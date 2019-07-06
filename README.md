@@ -1,9 +1,10 @@
 # WumpusMod
 WumpusMod moderation bot with a ticket system, prefix is ``w!``.
 # Commands
+``w!help`` - Help command
+
 **Moderation**
 
-``w!help`` - Help command
 
 | Command | Description | Permission Required |
 | ------- | ----------- | ------------------- |
