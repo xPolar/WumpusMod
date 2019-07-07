@@ -8,7 +8,9 @@ bot = commands.Bot(command_prefix = "w!", case_insensitive = True)
 bot.remove_command('help')
 
 #Cogs
-cogs = ["cogs.moderation"]
+cogs = ["cogs.moderation",
+        "cogs.tickets",
+        "cogs.help"]
 
 #Values
 errorcolor = 0xFF2B2B
@@ -21,8 +23,7 @@ for cog in cogs:
 
 #Check if owner
 def owner(ctx):
-    owner_ids = [229695200082132993]
-    return ctx.author.id in owner_ids
+    return ctx.author.id == 229695200082132993
 
 #Restarts and reloads all cogs
 @bot.command()
@@ -36,6 +37,7 @@ async def restart(ctx):
         print(f"Restarting {cog}")
         bot.reload_extension(cog)
     await ctx.send(embed = restarted, delete_after = 10.0)
+    await ctx.message.delete()
 
 #Command error
 @bot.event
