@@ -49,7 +49,7 @@ class help(commands.Cog):
                 embed.set_author(name = "Tickets")
                 embed.set_footer(text = "For more information on each command do !help (Command).")
                 await ctx.send(embed = embed)
-            if module.lower() == "purge" or "clear":
+            if module.lower() == "purge" or module.lower() == "clear":
                 embed = discord.Embed(
                     title = "Description",
                     description = "Removes a large amount of messages in a channel.",
@@ -130,7 +130,7 @@ class help(commands.Cog):
                 embed.set_author(name = "Adduser")
                 embed.add_field(name = "Usage", value = "``w!adduser (User)``")
                 await ctx.send(embed = embed)
-            if module.lower() == "removeuser" or "rmuser":
+            if module.lower() == "removeuser" or module.lower() == "rmuser":
                 embed = discord.Embed(
                     title = "Description",
                     description = "Removes a user from a ticket.",
@@ -155,13 +155,15 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Ping")
-            if module.lower() == "info" or "information":
+                await ctx.send(embed = embed)
+            if module.lower() == "info" or module.lower() == "information":
                 embed = discord.Embed(
                     title = "Description",
                     description = "Shows some basic information.",
                     color = self.blurple
                 )
                 embed.set_author(name = "Info / Information")
+                await ctx.send(embed = embed)
             if module.lower() == "invite":
                 embed = discord.Embed(
                     title = "Description",
@@ -169,6 +171,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Invite")
+                await ctx.send(embed = embed)
             if module.lower() == "support":
                 embed = discord.Embed(
                     title = "Description",
@@ -176,6 +179,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Support")
+                await ctx.send(embed = embed)
             if module.lower() == "github":
                 embed = discord.Embed(
                     title = "Description",
@@ -183,13 +187,15 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Github")
-            if module.lower() == "info" or "information":
+                await ctx.send(embed = embed)
+            if module.lower() == "leave":
                 embed = discord.Embed(
                     title = "Description",
                     description = "Leaves the server so you don't have to kick it.",
                     color = self.blurple
                 )
                 embed.set_author(name = "Leave")
+                await ctx.send(embed = embed)
             else:
                 embed = discord.Embed(
                     title = "Help Error",
