@@ -1,4 +1,6 @@
 # Table Of Contents
+- [Important Links](https://github.com/xPolar/WumpusMod#important-links)
+
 - [Commands](https://github.com/xPolar/WumpusMod#commands)
 
 - [Selfhosting](https://github.com/xPolar/WumpusMod#selfhosting)
