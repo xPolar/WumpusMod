@@ -11,6 +11,8 @@
 - [Support Server](https://discord.gg/tjA5ssJ)
 
 # Commands
+Bot prefix - `w!`
+
 **Moderation**
 
 | Command | Description | Permission Required |
@@ -34,10 +36,15 @@
 
 **Other**
 
-| Command | Description |
-| ------- | ----------- |
-| Help | Help command |
-| Ping | Show's the bot's current ping |
+| Command | Description | Permissions Required |
+| ------- | ----------- | -------------------- |
+| Help | Help command. | N/A |
+| Ping | Shows the bot's current ping. | N/A |
+| Info | Shows some basic information. | N/A |
+| Invite | Sends a link to invite the bot. | N/A |
+| Support | Sends a link to join the support server. | N/A |
+| Github | Sends a link to view the github. | N/A |
+| Leave | Leaves the server so you don't have to kick it. | Manage Server |
 
 # Selfhosting
 **Selfhosting for WumpusMod is allowed but support will not be provided, if you break the bot do not expect for the support team to fix it.**
