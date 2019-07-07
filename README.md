@@ -1,10 +1,15 @@
-# WumpusMod
-WumpusMod moderation bot with a ticket system, prefix is ``w!``.
+# Table Of Contents
+- [Commands](https://github.com/xPolar/WumpusMod#commands)
+
+- [Selfhosting](https://github.com/xPolar/WumpusMod#selfhosting)
+
+# Important Links
+- [Invite Link](https://discordapp.com/api/oauth2/authorize?client_id=596532744218214402&permissions=8&scope=bot)
+
+- [Support Server](https://discord.gg/tjA5ssJ)
+
 # Commands
-``w!help`` - Help command
-
 **Moderation**
-
 
 | Command | Description | Permission Required |
 | ------- | ----------- | ------------------- |
@@ -24,3 +29,13 @@ WumpusMod moderation bot with a ticket system, prefix is ``w!``.
 | Removeuser | Removes a user from a ticket | N/A |
 | Close | Closes a ticket | Creator of ticket or Supporters |
 | Supporteradd | Adds a user to the supporter role | Manage Server |
+
+**Other**
+
+| Command | Description |
+| ------- | ----------- |
+| Help | Help command |
+| Ping | Show's the bot's current ping |
+
+# Selfhosting
+**Selfhosting for WumpusMod is allowed but support will not be provided, if you break the bot do not expect for the support team to fix it.**
