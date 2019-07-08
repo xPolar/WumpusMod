@@ -1,7 +1,12 @@
+![Banner](https://cdn.discordapp.com/attachments/596978375986249742/597625345713111041/WumpusCop597582790040485929_WumpusMod.png)
 # Table Of Contents
 - [Important Links](https://github.com/xPolar/WumpusMod#important-links)
 
 - [Commands](https://github.com/xPolar/WumpusMod#commands)
+
+- [Required Permissions](https://github.com/xPolar/WumpusMod#required-permissions)
+
+- [Modlog Intergration](https://github.com/xPolar/WumpusMod#modlog-intergration)
 
 - [Selfhosting](https://github.com/xPolar/WumpusMod#selfhosting)
 
@@ -45,6 +50,20 @@ Bot prefix - `w!`
 | Support | Sends a link to join the support server. | N/A |
 | Github | Sends a link to view the github. | N/A |
 | Leave | Leaves the server so you don't have to kick it. | Manage Server |
+
+# Required Permissions
+| Permission | Reason |
+| ---------- | ------ |
+| Delete Message(s) | Purge command. |
+| Kick Member(s) | Kick command. |
+| Ban Member(s) | Ban command. |
+| Manage Role(s) | Supporter role, add and remove users command (Tickets) and Mute command (Moderation). |
+| Manage Channel(s) | Ticket and Close command. |
+| Embed Links | Embeds |
+| Read and Send Message(s) | DUH |
+
+# Modlog Intergration
+**If you would like WumpusMod to log all events into a modlog create a channel called ``modlog`` and allow WumpusMod to read and send messages in that channel.**
 
 # Selfhosting
 **Selfhosting for WumpusMod is allowed but support will not be provided, if you break the bot do not expect for the support team to fix it.**
