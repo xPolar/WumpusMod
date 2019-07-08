@@ -78,4 +78,4 @@ async def on_ready():
     print(f"The bot has been started!\nServer Count - {len(bot.guilds)}\nUser Count - {len(bot.users)}")
 
 #Starts bot
-bot.run("NTk2NTMyNzQ0MjE4MjE0NDAy.XR7hJw.aqaIOxtz13GgP5Qip9spO3OJxrY")
+bot.run("TOKEN")
