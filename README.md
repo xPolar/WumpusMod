@@ -50,6 +50,7 @@ Bot prefix - `w!`
 | Support | Sends a link to join the support server. | N/A |
 | Github | Sends a link to view the github. | N/A |
 | Leave | Leaves the server so you don't have to kick it. | Manage Server |
+| Prefix | Set's the server's prefix | Manage Server |
 
 # Required Permissions
 | Permission | Reason |
