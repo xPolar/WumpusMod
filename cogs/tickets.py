@@ -89,7 +89,7 @@ class tickets(commands.Cog):
                 await msg.edit(embed = created)
                 ticketchannelmsg = discord.Embed(
                 title = "Ticket",
-                description = f"Hey {ctx.author.mention}, this is your ticket! Close this ticket with ``?close``, add users with ``?adduser (User)``, and ``?rmuser (User)``.",
+                description = f"Hey {ctx.author.mention}, this is your ticket! Close this ticket with ``w!close``, add users with ``w!adduser (User)``, and ``w!rmuser (User)``.",
                 color = self.blurple
                 )
                 await ticketchannel.send(embed = ticketchannelmsg)
