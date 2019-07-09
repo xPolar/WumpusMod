@@ -2,6 +2,7 @@
 import discord
 from discord.ext import commands
 import asyncio
+import json
 
 class tickets(commands.Cog):
 
@@ -34,6 +35,9 @@ class tickets(commands.Cog):
     #Ticket
     @commands.command()
     async def ticket(self, ctx, *, reason = None):
+        with open("prefixes.json", "r") as f:
+            prefixes = json.load(f)
+        prefix = prefixes[str(ctx.message.guild.id)]
         try:
             supporter = discord.utils.get(ctx.guild.roles, name = "Supporter")
             if supporter == None:
@@ -89,7 +93,7 @@ class tickets(commands.Cog):
                 await msg.edit(embed = created)
                 ticketchannelmsg = discord.Embed(
                 title = "Ticket",
-                description = f"Hey {ctx.author.mention}, this is your ticket! Close this ticket with ``w!close``, add users with ``w!adduser (User)``, and ``w!rmuser (User)``.",
+                description = f"Hey {ctx.author.mention}, this is your ticket! Close this ticket with ``{prefix}close``, add users with ``{prefix}adduser (User)``, and ``{prefix}rmuser (User)``.",
                 color = self.blurple
                 )
                 await ticketchannel.send(embed = ticketchannelmsg)
