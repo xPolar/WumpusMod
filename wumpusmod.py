@@ -1,9 +1,22 @@
+import asyncio
 import discord
 from discord.ext import commands
-import asyncio
+import json
+import os
+
+#Server side prefix thing
+def get_prefix(bot, message):
+    if message.guild == None:
+        return "w!"
+    with open("prefixes.json", "r") as f:
+        prefixes = json.load(f)
+    if str(message.guild.id) not in prefixes:
+        return "w!"
+    prefix = prefixes[str(message.guild.id)]
+    return prefix
 
 #Set prefix and set case sensitive to false
-bot = commands.Bot(command_prefix = "w!", case_insensitive = True)
+bot = commands.Bot(command_prefix = get_prefix, case_insensitive = True)
 
 #Remove default help command
 bot.remove_command('help')
@@ -23,7 +36,7 @@ for cog in cogs:
 
 #Check if owner
 def owner(ctx):
-    return ctx.author.id == OWNERID
+    return ctx.author.id == OWNERIDHERE
 
 #Restarts and reloads all cogs
 @bot.command()
@@ -54,7 +67,7 @@ async def on_command_error(ctx, error):
         )
         await ctx.send(embed = errorembed)
     elif isinstance(error, commands.MissingPermissions):
-        channel = bot.get_channel(ERRORLOGGINGCHANNELID)
+        channel = bot.get_channel(ERRORLOGGINGCHANNELIDHERE)
         embed = discord.Embed(
             title = "Invokation",
             description = ctx.message.content,
@@ -79,3 +92,4 @@ async def on_ready():
 
 #Starts bot
 bot.run("TOKEN")
+
