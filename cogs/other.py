@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import json
 
 class help(commands.Cog):
 
@@ -7,9 +8,43 @@ class help(commands.Cog):
         self.bot = bot
         self.errorcolor = 0xFF2B2B
         self.blurple = 0x7289DA
+    async def is_guild_owner(ctx):
+        return ctx.author.id == ctx.guild.owner.id
+
+    @commands.command()
+    @command.has_permissions(manage_guild = True)
+    async def prefix(self, ctx, *, pre):
+        if ctx.message.author.id == ctx.guild.owner.id:
+            with open(r"DIRECTERYPATHHERE\prefixes.json", "r") as f:
+                prefixes = json.load(f)
+
+            prefixes[str(ctx.guild.id)] = pre
+            embed = discord.Embed(
+                title = "Prefix",
+                description = f"{ctx.message.guild}'s prefix is  now `{pre}`",
+                color = self.blurple
+            )
+            await ctx.send(embed = embed)
+
+            with open(r"DIRECTERYPATHHERE\prefixes.json", "w") as f:
+                json.dump(prefixes, f, indent = 4)
+    
+    @prefix.error()
+    async def prefix_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(
+                title = "Missing Permissions",
+                description = "You are missing the **Manage Server** permission!",
+                color = self.errorcolor
+            )
+            await ctx.send(embed = embed)
+            await ctx.message.delete()
 
     @commands.command()
     async def help(self, ctx, module = None):
+        with open("prefixes.json", "r") as f:
+            prefixes = json.load(f)
+        prefix = prefixes[str(ctx.message.guild.id)]
         if module == None:
             embed = discord.Embed(
                 title = "``Moderation``",
@@ -18,8 +53,8 @@ class help(commands.Cog):
             )
             embed.set_author(name = "Categorys")
             embed.add_field(name = "``Tickets``", value = "5 total commands.")
-            embed.add_field(name = "``Other``", value = "6 total commands.")
-            embed.set_footer(text = "For more information on each category do w!help (Category).")
+            embed.add_field(name = "``Other``", value = "7 total commands.")
+            embed.set_footer(text = f"For more information on each category do {prefix}help (Category).")
             await ctx.send(embed = embed)
         else:
             if module.lower() == "moderation":
@@ -29,7 +64,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Moderation")
-                embed.set_footer(text = "For more information on each command do w!help (Command).")
+                embed.set_footer(text = f"For more information on each command do {prefix}help (Command).")
                 await ctx.send(embed = embed)
             elif module.lower() == "tickets":
                 embed = discord.Embed(
@@ -38,7 +73,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Tickets")
-                embed.set_footer(text = "For more information on each command do w!help (Command).")
+                embed.set_footer(text = f"For more information on each command do {prefix}help (Command).")
                 await ctx.send(embed = embed)
             elif module.lower() == "other":
                 embed = discord.Embed(
@@ -47,7 +82,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Tickets")
-                embed.set_footer(text = "For more information on each command do w!help (Command).")
+                embed.set_footer(text = f"For more information on each command do {prefix}help (Command).")
                 await ctx.send(embed = embed)
             elif module.lower() == "purge" or module.lower() == "clear":
                 embed = discord.Embed(
@@ -56,7 +91,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Purge / Clear")
-                embed.add_field(name = "Usage", value = "``w!purge (Amount)``\n``w!clear (Amount)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}purge (Amount)``\n``{prefix}clear (Amount)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "kick":
                 embed = discord.Embed(
@@ -65,7 +100,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Kick")
-                embed.add_field(name = "Usage", value = "``w!kick (User) (Reason)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}kick (User) (Reason)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "ban":
                 embed = discord.Embed(
@@ -74,7 +109,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Ban")
-                embed.add_field(name = "Usage", value = "``w!ban (User) (Reason)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}ban (User) (Reason)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "unban":
                 embed = discord.Embed(
@@ -83,7 +118,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Unban")
-                embed.add_field(name = "Usage", value = "``w!unban (User)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}unban (User)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "mute":
                 embed = discord.Embed(
@@ -92,7 +127,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Mute")
-                embed.add_field(name = "Usage", value = "``w!mute (User) (Reason)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}mute (User) (Reason)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "unmute":
                 embed = discord.Embed(
@@ -101,7 +136,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Unmute")
-                embed.add_field(name = "Usage", value = "``w!unmute (User)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}unmute (User)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "ticket":
                 embed = discord.Embed(
@@ -110,7 +145,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Ticket")
-                embed.add_field(name = "Usage", value = "``w!ticket (Reason)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}ticket (Reason)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "close":
                 embed = discord.Embed(
@@ -119,7 +154,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Close")
-                embed.add_field(name = "Usage", value = "``w!close``")
+                embed.add_field(name = "Usage", value = f"``{prefix}close``")
                 await ctx.send(embed = embed)
             elif module.lower() == "adduser":
                 embed = discord.Embed(
@@ -128,7 +163,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Adduser")
-                embed.add_field(name = "Usage", value = "``w!adduser (User)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}adduser (User)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "removeuser" or module.lower() == "rmuser":
                 embed = discord.Embed(
@@ -137,7 +172,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Removeuser / Rmuser")
-                embed.add_field(name = "Usage", value = "``w!removemuser (User)``\n``w!rmuser (User)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}removemuser (User)``\n``{prefix}rmuser (User)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "supporteradd":
                 embed = discord.Embed(
@@ -146,7 +181,7 @@ class help(commands.Cog):
                     color = self.blurple
                 )
                 embed.set_author(name = "Supporteradd")
-                embed.add_field(name = "Usage", value = "``w!supporteradd (User)``")
+                embed.add_field(name = "Usage", value = f"``{prefix}supporteradd (User)``")
                 await ctx.send(embed = embed)
             elif module.lower() == "ping":
                 embed = discord.Embed(
@@ -196,6 +231,14 @@ class help(commands.Cog):
                 )
                 embed.set_author(name = "Leave")
                 await ctx.send(embed = embed)
+            elif module.lower() == "prefix":
+                embed = discord.Embed(
+                    title = "Description",
+                    description = "Set the server's prefix",
+                    color = self.blurple
+                )
+                embed.set_author(name = "Prefix")
+                ctx.send(embed = embed)
             else:
                 embed = discord.Embed(
                     title = "Help Error",
@@ -247,7 +290,7 @@ class help(commands.Cog):
         embed.add_field(name = "Uses", value = "WumpusMod is a moderation and ticket bot.")
         embed.add_field(name = "Libary", value = "<:python:596577462335307777> Discord.py")
         embed.add_field(name = "Important Links", value = "[Invite Link](https://discordapp.com/oauth2/authorize?client_id=596532744218214402&permissions=8&scope=bot), [Support Server](https://discordapp.com/invite/tjA5ssJ), and [Github](https://github.com/xPolar/WumpusMod)", inline = False)
-        embed.add_field(name = "Prefix", value = "`w!`")
+        embed.add_field(name = "Prefix", value = f"`{prefix}`")
         embed.add_field(name = "Server Count", value = f"{len(self.bot.guilds)}")
         embed.add_field(name = "User Count", value = f"{len(self.bot.users)}")
         await ctx.send(embed = embed)
@@ -288,3 +331,4 @@ class help(commands.Cog):
 
 def setup(bot):
     bot.add_cog(help(bot))
+
