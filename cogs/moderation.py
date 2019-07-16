@@ -390,5 +390,69 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
+    #Softban
+    @commands.command(aliases = ["lightban"])
+    @commands.has_permissions(ban_members = True)
+    async def softban(self, ctx, member : discord.Member = None, *, reason = None):
+        try:
+            if member == None:
+                embed = discord.Embed(
+                    title = "Softban Error",
+                    description = "Please specify a user!",
+                    color = self.errorcolor
+                )
+                await ctx.send(embed = embed, delete_after = 5.0)
+            else:
+                if reason == None:
+                    await member.ban(reason = f"Softban by {ctx.message.author.name}#{ctx.message.author.discriminator}.\nReason - No Reason Provided.")
+                    await member.unban()
+                    embed = discord.Embed(
+                        title = "Softban",
+                        description = f"{member.mention} has been softbanned by {ctx.message.author.mention}",
+                        color = self.blurple
+                    )
+                    await ctx.send(embed = embed)
+                    modlog = discord.utils.get(ctx.guild.text_channels, name = "modlog")
+                    if modlog == None:
+                        return
+                    if modlog != None:
+                        embed = discord.Embed(
+                            title = "Softban",
+                            description = f"{member.mention} has been softbanned by {ctx.message.author.mention}.",
+                            color = self.blurple
+                        )
+                        await modlog.send(embed = embed)
+                else:
+                    await member.ban(reason = f"Softban by {ctx.message.author.name}#{ctx.message.author.discriminator}.\nReason - {reason}.")
+                    await member.unban()
+                    embed = discord.Embed(
+                        title = "Softban",
+                        description = f"{member.mention} has been softbanned by {ctx.message.author.mention} for {reason}",
+                        color = self.blurple
+                    )
+                    await ctx.send(embed = embed)
+                    modlog = discord.utils.get(ctx.guild.text_channels, name = "modlog")
+                    if modlog == None:
+                        return
+                    if modlog != None:
+                        embed = discord.Embed(
+                            title = "Softban",
+                            description = f"{member.mention} has been softbanned by {ctx.message.author.mention} for {reason}.",
+                            color = self.blurple
+                        )
+                        await modlog.send(embed = embed)
+        except:
+            await ctx.send(embed = self.required_permissions)
+
+        @softban.error
+        async def softban_error(self, ctx, error):
+            if isinstance(error, commands.MissingPermissions):
+                embed = discord.Embed(
+                    title = "Missing Permissions!",
+                    description = "You are missing the **Ban Member(s)** permission!",
+                    color = self.errorcolor
+                )
+                await ctx.send(embed = embed)
+
 def setup(bot):
     bot.add_cog(moderation(bot))
