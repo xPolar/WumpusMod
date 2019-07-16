@@ -8,28 +8,25 @@ class other(commands.Cog):
         self.bot = bot
         self.errorcolor = 0xFF2B2B
         self.blurple = 0x7289DA
-    async def is_guild_owner(ctx):
-        return ctx.author.id == ctx.guild.owner.id
 
     @commands.command()
-    @command.has_permissions(manage_guild = True)
+    @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, *, pre):
-        if ctx.message.author.id == ctx.guild.owner.id:
-            with open(r"DIRECTERYPATHHERE\prefixes.json", "r") as f:
-                prefixes = json.load(f)
+        with open(r"C:\Users\waris\Desktop\Bots\WumpusMod\prefixes.json", "r") as f:
+            prefixes = json.load(f)
 
-            prefixes[str(ctx.guild.id)] = pre
-            embed = discord.Embed(
-                title = "Prefix",
-                description = f"{ctx.message.guild}'s prefix is  now `{pre}`",
-                color = self.blurple
-            )
-            await ctx.send(embed = embed)
+        prefixes[str(ctx.guild.id)] = pre
+        embed = discord.Embed(
+            title = "Prefix",
+            description = f"{ctx.message.guild}'s prefix is  now `{pre}`",
+            color = self.blurple
+        )
+        await ctx.send(embed = embed)
 
-            with open(r"DIRECTERYPATHHERE\prefixes.json", "w") as f:
-                json.dump(prefixes, f, indent = 4)
-    
-    @prefix.error()
+        with open(r"C:\Users\waris\Desktop\Bots\WumpusMod\prefixes.json", "w") as f:
+            json.dump(prefixes, f, indent = 4)
+
+    @prefix.error
     async def prefix_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(
@@ -48,19 +45,19 @@ class other(commands.Cog):
         if module == None:
             embed = discord.Embed(
                 title = "``Moderation``",
-                description = "6 total commands.",
+                description = "7 total commands.",
                 color = self.blurple
             )
             embed.set_author(name = "Categorys")
             embed.add_field(name = "``Tickets``", value = "5 total commands.")
-            embed.add_field(name = "``Other``", value = "7 total commands.")
+            embed.add_field(name = "``Other``", value = "6 total commands.")
             embed.set_footer(text = f"For more information on each category do {prefix}help (Category).")
             await ctx.send(embed = embed)
         else:
             if module.lower() == "moderation":
                 embed = discord.Embed(
                     title = "Commands",
-                    description = "**Purge / Clear** - Deletes a large amount of messages.\n**Kick** - Kicks a user from the server.\n**Ban** - Bans a user from the server.\n**Unban** - Unbans a user from the server.\n**Mute** - Mutes a user so they can't talk\n**Unmute** - Unmutes a user so they can talk.",
+                    description = "**Purge / Clear** - Deletes a large amount of messages.\n**Kick** - Kicks a user from the server.\n**Ban** - Bans a user from the server.\n**Unban** - Unbans a user from the server.\n**Mute** - Mutes a user so they can't talk\n**Unmute** - Unmutes a user so they can talk.\n**Softban / Lightban** - Bans a user then unbans them.",
                     color = self.blurple
                 )
                 embed.set_author(name = "Moderation")
@@ -231,14 +228,15 @@ class other(commands.Cog):
                 )
                 embed.set_author(name = "Leave")
                 await ctx.send(embed = embed)
-            elif module.lower() == "prefix":
+            elif module.lower() == "softban" or module.lower() == "lightban":
                 embed = discord.Embed(
                     title = "Description",
-                    description = "Set the server's prefix",
+                    description = "Bans a user then unbans.\nBasically used to delete a users recent messages.",
                     color = self.blurple
                 )
-                embed.set_author(name = "Prefix")
-                ctx.send(embed = embed)
+                embed.set_author(name = "Softban / Lightban")
+                embed.add_field(name = "Usage", value = f"``{prefix}softban (User) (Reason)``\n``{prefix}lightban (User) (Reason)``")
+                await ctx.send(embed = embed)
             else:
                 embed = discord.Embed(
                     title = "Help Error",
@@ -281,6 +279,9 @@ class other(commands.Cog):
     #Info command
     @commands.command(aliaes = ["information"])
     async def info(self, ctx):
+        with open("prefixes.json", "r") as f:
+            prefixes = json.load(f)
+        prefix = prefixes[str(ctx.message.guild.id)]
         embed = discord.Embed(
             title = "Developer",
             description = "This bot was made by <@229695200082132993>.",
@@ -331,4 +332,3 @@ class other(commands.Cog):
 
 def setup(bot):
     bot.add_cog(other(bot))
-
