@@ -444,15 +444,44 @@ class moderation(commands.Cog):
         except:
             await ctx.send(embed = self.required_permissions)
 
-        @softban.error
-        async def softban_error(self, ctx, error):
-            if isinstance(error, commands.MissingPermissions):
-                embed = discord.Embed(
-                    title = "Missing Permissions!",
-                    description = "You are missing the **Ban Member(s)** permission!",
-                    color = self.errorcolor
-                )
-                await ctx.send(embed = embed)
+    @softban.error
+    async def softban_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(
+                title = "Missing Permissions!",
+                description = "You are missing the **Ban Member(s)** permission!",
+                color = self.errorcolor
+            )
+            await ctx.send(embed = embed)
+
+    #Nuke command
+    @commands.command()
+    @commands.has_permissions(manage_messages = True)
+    async def nuke(self, ctx):
+        try:
+            channel_position = ctx.channel.position
+            new_channel = await ctx.channel.clone()
+            await new_channel.edit(reason = f"Nuke by {ctx.message.author.name}#{ctx.message.author.discriminator}", position = channel_position)
+            await ctx.channel.delete()
+            embed = discord.Embed(
+                title = "Nuke",
+                description  = "This channel has been nuked!",
+                color = self.blurple
+            )
+            embed.set_image(url = "https://cdn.discordapp.com/attachments/600843048724987925/600843407228928011/tenor.gif")
+            await new_channel.send(embed = embed, delete_after = 5.0)
+        except:
+            await ctx.send(embed = self.required_permissions)
+
+    @nuke.error
+    async def nuke_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(
+                title = "Missing Permissions!",
+                description = "You are missing the **Manage Message(s)** permission!",
+                color = self.errorcolor
+            )
+            await ctx.send(embed = embed)
 
 def setup(bot):
     bot.add_cog(moderation(bot))

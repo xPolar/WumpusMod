@@ -45,7 +45,7 @@ class other(commands.Cog):
         if module == None:
             embed = discord.Embed(
                 title = "``Moderation``",
-                description = "7 total commands.",
+                description = "8 total commands.",
                 color = self.blurple
             )
             embed.set_author(name = "Categorys")
@@ -57,7 +57,7 @@ class other(commands.Cog):
             if module.lower() == "moderation":
                 embed = discord.Embed(
                     title = "Commands",
-                    description = "**Purge / Clear** - Deletes a large amount of messages.\n**Kick** - Kicks a user from the server.\n**Ban** - Bans a user from the server.\n**Unban** - Unbans a user from the server.\n**Mute** - Mutes a user so they can't talk\n**Unmute** - Unmutes a user so they can talk.\n**Softban / Lightban** - Bans a user then unbans them.",
+                    description = "**Purge / Clear** - Deletes a large amount of messages.\n**Kick** - Kicks a user from the server.\n**Ban** - Bans a user from the server.\n**Unban** - Unbans a user from the server.\n**Softban / Lightban** - Bans a user then unbans them.\n**Mute** - Mutes a user so they can't talk\n**Unmute** - Unmutes a user so they can talk.\n**Nuke** - Deletes all the messages in a channel.",
                     color = self.blurple
                 )
                 embed.set_author(name = "Moderation")
@@ -236,6 +236,14 @@ class other(commands.Cog):
                 )
                 embed.set_author(name = "Softban / Lightban")
                 embed.add_field(name = "Usage", value = f"``{prefix}softban (User) (Reason)``\n``{prefix}lightban (User) (Reason)``")
+                await ctx.send(embed = embed)
+            elif module.lower() == "nuke":
+                embed = discord.Embed(
+                    title = "Description",
+                    description = "Deletes all the messages in a channel.",
+                    color = self.blurple
+                )
+                embed.set_author(name = "Nuke")
                 await ctx.send(embed = embed)
             else:
                 embed = discord.Embed(
