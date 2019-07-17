@@ -23,6 +23,7 @@ Bot prefix - `w!`
 | Command | Description | Permission Required |
 | ------- | ----------- | ------------------- |
 | Purge / Clear | Deletes a large amount of messages | Manage Message(s) |
+| Nuke | Deletes all the messages in a channel | Manage Message(s) |
 | Kick | Kicks a user from the guild | Kick Member(s) |
 | Ban | Bans a user from the guild.| Ban Member(s) |
 | Unban | Unbans a user from the guild | Ban Member(s) |
