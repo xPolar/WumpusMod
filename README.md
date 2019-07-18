@@ -18,7 +18,7 @@
 - [Wiki](https://github.com/xPolar/WumpusMod/wiki/Landing-Page)
 
 # Commands
-Bot prefix - `w!`
+WumpusMod's default prefix is `w!`
 
 **Moderation**
 
