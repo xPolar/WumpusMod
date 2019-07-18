@@ -15,6 +15,8 @@
 
 - [Support Server](https://discord.gg/tjA5ssJ)
 
+- [Wiki](https://github.com/xPolar/WumpusMod/wiki/Landing-Page)
+
 # Commands
 Bot prefix - `w!`
 
@@ -37,7 +39,7 @@ Bot prefix - `w!`
 | ------- | ----------- | ------------------ |
 | Ticket | Creates a new ticket | N/A |
 | Adduser | Adds a user to a ticket | Creator of ticket or Supporters|
-| Removeuser / Rmuser | Removes a user from a ticket | N/A |
+| Removeuser / Rmuser | Removes a user from a ticket | Creator of ticket or Supporters |
 | Close | Closes a ticket | Creator of ticket or Supporters |
 | Supporteradd | Adds a user to the supporter role | Manage Server |
 
