@@ -29,9 +29,9 @@ WumpusMod's default prefix is `w!`
 | Kick | Kicks a user from the guild | Kick Member(s) |
 | Ban | Bans a user from the guild.| Ban Member(s) |
 | Unban | Unbans a user from the guild | Ban Member(s) |
-| Softban / Lightban | Bans then unbans a user | Ban Member(s) |
 | Mute | Mutes a user so they can't talk (Timed Mutes Not Avaliable) | Manage Role(s) |
 | Unmute | Unmutes a user so they can talk | Manage Role(s) |
+| Modlog | Set the server's modlog | Manage Server |
 
 **Ticket System**
 
@@ -42,6 +42,10 @@ WumpusMod's default prefix is `w!`
 | Removeuser / Rmuser | Removes a user from a ticket | Creator of ticket or Supporters |
 | Close | Closes a ticket | Creator of ticket or Supporters |
 | Supporteradd | Adds a user to the supporter role | Manage Server |
+| Ticketcategory | Set which category tickets go into | Manage Server |
+| Ticketlogchannel | Set the channel where ticketlogs get sent to. | Manage Server |
+| Mention | Set the message sent once a ticket is created | Manage Server |
+| Supportrole | Set wich role can respond to tickets | Manage Server |
 
 **Other**
 
@@ -49,11 +53,9 @@ WumpusMod's default prefix is `w!`
 | ------- | ----------- | -------------------- |
 | Help | Help command. | N/A |
 | Ping | Shows the bot's current ping. | N/A |
-| Information / Info | Shows some basic information. | N/A |
 | Invite | Sends a link to invite the bot. | N/A |
 | Support | Sends a link to join the support server. | N/A |
 | Github | Sends a link to view the github. | N/A |
-| Leave | Leaves the server so you don't have to kick it. | Manage Server |
 | Prefix | Set's the server's prefix | Manage Server |
 
 # Required Permissions
@@ -61,14 +63,11 @@ WumpusMod's default prefix is `w!`
 | ---------- | ------ |
 | Delete Message(s) | Purge command. |
 | Kick Member(s) | Kick command. |
-| Ban Member(s) | Ban / Unban / Softban commands. |
+| Ban Member(s) | Ban / Unban |
 | Manage Role(s) | Supporter / Add Users / Remove Users / Mute commands. |
 | Manage Channel(s) | Ticket / Close commands. |
 | Embed Links | Embeds |
 | Read and Send Message(s) | DUH |
 
-# Modlog Intergration
-**If you would like WumpusMod to log all events into a modlog create a channel called ``modlog`` and allow WumpusMod to read and send messages in that channel.**
-
 # Selfhosting
-**Selfhosting for WumpusMod is allowed but support will not be provided, if you break the bot do not expect for the support team to fix it.**
+**Selfhosting is supported and allowed!**
