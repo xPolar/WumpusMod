@@ -6,14 +6,12 @@
 
 - [Required Permissions](https://github.com/xPolar/WumpusMod#required-permissions)
 
-- [Modlog Intergration](https://github.com/xPolar/WumpusMod#modlog-intergration)
-
 - [Selfhosting](https://github.com/xPolar/WumpusMod#selfhosting)
 
 # Important Links
 - [Invite Link](https://discordapp.com/api/oauth2/authorize?client_id=596532744218214402&permissions=8&scope=bot)
 
-- [Support Server](https://discord.gg/tjA5ssJ)
+- [Support Server](https://discord.gg/gkAKatd)
 
 - [Wiki](https://github.com/xPolar/WumpusMod/wiki/Landing-Page)
 
