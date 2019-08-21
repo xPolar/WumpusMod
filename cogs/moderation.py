@@ -628,5 +628,42 @@ class moderation(commands.Cog):
             with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "w") as f:
                 json.dump(modlogs, f, indent = 4)
 
+    @commands.command()
+    @commands.has_permissions(manage_guild = True)
+    async def muterole(self, ctx, *, role : discord.Role = None):
+        """
+        Set the servers mute role.
+        """
+        with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "r") as f:
+            muteroles = json.load(f)
+        if role == None:
+            embed = discord.Embed(
+                title = "Muterole Error",
+                description = "Please specify a role!",
+                color = self.errorcolor
+            )
+            await ctx.send(embed = embed)
+        else:
+            muteroles[str(ctx.guild.id)] = role.id
+            embed = discord.Embed(
+                title = "Supportrole",
+                description = f"{ctx.message.guild}'s mute role is  now {role.mention}",
+                color = self.blurple
+            )
+            await ctx.send(embed = embed)
+
+            with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "w") as f:
+                json.dump(muteroles, f, indent = 4)
+
+    @muterole.error
+    async def supportrole_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(
+                title = "Missing Permissions",
+                description = "You are missing the **Manage Server** permission!",
+                color = self.errorcolor
+            )
+            await ctx.send(embed = embed)
+
 def setup(bot):
     bot.add_cog(moderation(bot))
