@@ -18,7 +18,7 @@ class other(commands.Cog):
             with open(r"PATHHERE\WumpusMod\prefixes.json", "r") as f:
                 prefixes = json.load(f)
 
-             prefixes[str(ctx.guild.id)] = pre
+            prefixes[str(ctx.guild.id)] = pre
             embed = discord.Embed(
                 title = "Prefix",
                 description = f"{ctx.message.guild}'s prefix is  now `{pre}`",
@@ -62,7 +62,7 @@ class other(commands.Cog):
 
     #Support command
     @commands.command()
-    async def github(self, ctx):
+    async def support(self, ctx):
         embed = discord.Embed(
             title = f"Feel free to join our support server!",
             url = "https://discord.gg/gkAKatd",
@@ -72,10 +72,10 @@ class other(commands.Cog):
 
     #Invite command
     @commands.command()
-    async def github(self, ctx):
+    async def invite(self, ctx):
         embed = discord.Embed(
-            title = f"Feel free to join our support server!",
-            url = "https://discord.gg/gkAKatd",
+            title = f"Feel free to invite me!",
+            url = "https://discordapp.com/api/oauth2/authorize?client_id=596532744218214402&permissions=8&scope=bot",
             color = self.blurple
         )
         await ctx.send(embed = embed)
