@@ -357,7 +357,7 @@ class ticket_system(commands.Cog):
             supportroles[str(ctx.guild.id)] = role.id
             embed = discord.Embed(
                 title = "Supportrole",
-                description = f"{ctx.message.guild}'s support role is  now {role}",
+                description = f"{ctx.message.guild}'s support role is  now {role.mention}",
                 color = self.blurple
             )
             await ctx.send(embed = embed)
