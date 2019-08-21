@@ -15,7 +15,7 @@ class other(commands.Cog):
     @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, *, pre):
         if ctx.message.author.id == ctx.guild.owner.id:
-            with open(r"C:\Users\waris\Documents\Code\Bots\WumpusMod\prefixes.json", "r") as f:
+            with open(r"PATHHERE\WumpusMod\prefixes.json", "r") as f:
                 prefixes = json.load(f)
 
             prefixes[str(ctx.guild.id)] = pre
@@ -26,7 +26,7 @@ class other(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-            with open(r"C:\Users\waris\Documents\Code\Bots\WumpusMod\prefixes.json", "w") as f:
+            with open(r"PATHHERE\WumpusMod\prefixes.json", "w") as f:
                 json.dump(prefixes, f, indent = 4)
 
     @prefix.error
