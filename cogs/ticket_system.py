@@ -18,6 +18,12 @@ class ticket_system(commands.Cog):
         Create a ticket.
         """
         try:
+            with open(r"PATHHERE\WumpusMod\Data\prefixes.json", "r") as f:
+                prefixes = json.load(f)
+            if str(ctx.message.guild.id) not in prefixes:
+                prefix = "w!"
+            else:
+                prefix = prefixes[str(ctx.message.guild.id)]
             with open(r"PATHHERE\WumpusMod\Data\supportroles.json", "r") as f:
                 supportroles = json.load(f)
             with open(r"PATHHERE\WumpusMod\Data\ticketcategorys.json", "r") as f:
@@ -87,13 +93,13 @@ class ticket_system(commands.Cog):
                         if reason == None:
                             ticketchannelmsg = discord.Embed(
                                 title = "Ticket",
-                                description = f"Hey {ctx.message.author.mention}, this is your ticket! Close this ticket with ``t!close``.",
+                                description = f"Hey {ctx.message.author.mention}, this is your ticket! Close this ticket with ``{prefix}close``.",
                                 color = self.blurple
                             )
                         else:
                             ticketchannelmsg = discord.Embed(
                             title = "Ticket",
-                            description = f"Hey {ctx.message.author.mention}, this is your ticket it was created with the reason {reason}! Close this ticket with ``t!close``.",
+                            description = f"Hey {ctx.message.author.mention}, this is your ticket it was created with the reason {reason}! Close this ticket with ``{prefix}close``.",
                             color = self.blurple
                             )
                         await ticketchannel.send(embed = ticketchannelmsg)

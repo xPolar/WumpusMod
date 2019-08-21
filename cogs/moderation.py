@@ -11,7 +11,6 @@ class moderation(commands.Cog):
         self.errorcolor = 0xFF2B2B
         self.blurple = 0x7289DA
 
-    #On guild join set up mute stuff
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         role = discord.utils.get(guild.roles, name = "Muted")
@@ -21,7 +20,6 @@ class moderation(commands.Cog):
             for channel in guild.text_channels:
                 await channel.set_permissions(role, send_messages = False)
 
-    #On channel create set up mute stuff
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel):
         guild = channel.guild
@@ -31,7 +29,6 @@ class moderation(commands.Cog):
         else:
             await channel.set_permissions(role, send_messages = False)
 
-    #Purge command
     @commands.command(aliases = ["clear"])
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, amount = None):
@@ -96,7 +93,6 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-    #Kick command
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, member : discord.Member = None, *, reason = None):
@@ -176,7 +172,6 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-    #Ban command
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, member : discord.Member = None, *, reason = None):
@@ -246,7 +241,6 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-    #Unban command
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def unban(self, ctx, *, member : discord.User = None):
@@ -294,7 +288,6 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-    #Mute command
     @commands.command()
     @commands.has_permissions(manage_roles = True)
     async def mute(self, ctx, member : discord.Member = None, time = None, *, reason = None):
