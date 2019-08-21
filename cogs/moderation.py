@@ -646,7 +646,7 @@ class moderation(commands.Cog):
         else:
             muteroles[str(ctx.guild.id)] = role.id
             embed = discord.Embed(
-                title = "Supportrole",
+                title = "Muterole",
                 description = f"{ctx.message.guild}'s mute role is  now {role.mention}",
                 color = self.blurple
             )
@@ -654,6 +654,9 @@ class moderation(commands.Cog):
 
             with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "w") as f:
                 json.dump(muteroles, f, indent = 4)
+
+            for channel in ctx.guild.text_channels:
+                await channel.set_permissions(role, send_messages = False)
 
     @muterole.error
     async def supportrole_error(self, ctx, error):
