@@ -1,19 +1,22 @@
+#Imports
 import asyncio
 import discord
 from discord.ext import commands
+import config
 import json
-import os
 
 #Server side prefix thing
 def get_prefix(bot, message):
     if message.guild == None:
-        return "w!"
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
-    if str(message.guild.id) not in prefixes:
-        return "w!"
-    prefix = prefixes[str(message.guild.id)]
-    return prefix
+        pass
+    else:
+        with open(r"PATHHERE\WumpusMod\Data\prefixes.json", "r") as f:
+            prefixes = json.load(f)
+        if str(message.guild.id) not in prefixes:
+            return commands.when_mentioned_or("w!")(bot, message)
+        else:
+            prefix = prefixes[str(message.guild.id)]
+            return commands.when_mentioned_or(prefix)(bot, message)
 
 #Set prefix and set case sensitive to false
 bot = commands.Bot(command_prefix = get_prefix, case_insensitive = True)
@@ -23,39 +26,46 @@ bot.remove_command('help')
 
 #Cogs
 cogs = ["cogs.moderation",
-        "cogs.tickets",
-        "cogs.other",]
+        "cogs.ticket_system",
+        "cogs.other",
+        "cogs.general"]
 
 #Values
 errorcolor = 0xFF2B2B
 blurple = 0x7289DA
 
 #Starts all cogs
+print("Starting all cogs...")
 for cog in cogs:
     bot.load_extension(cog)
 
 #Check if owner
 def owner(ctx):
-    return ctx.author.id == OWNERIDHERE
+    return ctx.author.id == config.OWNERID
 
 #Restarts and reloads all cogs
 @bot.command()
 @commands.check(owner)
 async def restart(ctx):
-    restarted = discord.Embed(
-        title = "Restart Completed!",
+    """
+    Used to restart bot
+    """
+    print("\nRestarting...")
+    restarting = discord.Embed(
+        title = "Restarting...",
         color = blurple
     )
+    msg = await ctx.send(embed = restarting)
     for cog in cogs:
         bot.reload_extension(cog)
-    await ctx.message.delete()
-    await bot.change_presence(activity = discord.Game(f"w!help | Moderating {(len(bot.users))} users!"))
-    print("\nReloading all cogs...")
-    await asyncio.sleep(3)
+        restarting.add_field(name = f"{cog}", value = "🔁 Restarted!")
+        await msg.edit(embed = restarting)
     print("All cogs loaded.\nRestarting the bot...")
-    await asyncio.sleep(3)
+    await bot.change_presence(activity = discord.Game(f"w!help | Moderating {(len(bot.users))} users!"))
     print(f"Restarted succesfully!\nServer Count - {len(bot.guilds)}\nUser Count - {len(bot.users)}")
-    await ctx.send(embed = restarted, delete_after = 5.0)
+    await asyncio.sleep(3)
+    await msg.delete()
+    await ctx.message.delete()
 
 #Command error
 @bot.event
@@ -66,30 +76,15 @@ async def on_command_error(ctx, error):
             color = errorcolor
         )
         await ctx.send(embed = errorembed)
-    elif isinstance(error, commands.MissingPermissions):
-        channel = bot.get_channel(ERRORLOGGINGCHANNELIDHERE)
-        embed = discord.Embed(
-            title = "Invokation",
-            description = ctx.message.content,
-            color = errorcolor
-        )
-        embed.set_author(name = "Error")
-        embed.add_field(name = "Result", value = error)
-        await channel.send(embed = embed)
-        return
     else:
         raise error
 
 #On ready
 @bot.event
 async def on_ready():
-    print("Loading all cogs...")
-    await asyncio.sleep(3)
-    print("All cogs loaded.\nStarting the bot...")
-    await asyncio.sleep(3)
+    print("All cogs loaded.")
     await bot.change_presence(activity = discord.Game(f"w!help | Moderating {(len(bot.users))} users!"))
     print(f"The bot has been started!\nServer Count - {len(bot.guilds)}\nUser Count - {len(bot.users)}")
 
 #Starts bot
-bot.run("TOKEN")
-
+bot.run(config.TOKEN)
