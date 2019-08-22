@@ -14,6 +14,9 @@ class other(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, *, pre):
+        """
+        Set the servers prefix.
+        """
         if ctx.message.author.id == ctx.guild.owner.id:
             with open(r"PATHHERE\WumpusMod\prefixes.json", "r") as f:
                 prefixes = json.load(f)
@@ -43,6 +46,9 @@ class other(commands.Cog):
     #Ping command
     @commands.command()
     async def ping(self, ctx):
+        """
+        Check the bots current ping.
+        """
         embed = discord.Embed(
             title = f"Pong!",
             description = f"{round(self.bot.latency * 1000)} ms",
@@ -53,6 +59,9 @@ class other(commands.Cog):
     #Github command
     @commands.command()
     async def github(self, ctx):
+        """
+        Get a link to the github.
+        """
         embed = discord.Embed(
             title = f"Feel free to check out the github!",
             url = "https://github.com/xPolar/WumpusMod",
@@ -63,6 +72,9 @@ class other(commands.Cog):
     #Support command
     @commands.command()
     async def support(self, ctx):
+        """
+        Get a link to the support server.
+        """
         embed = discord.Embed(
             title = f"Feel free to join our support server!",
             url = "https://discord.gg/gkAKatd",
@@ -73,6 +85,9 @@ class other(commands.Cog):
     #Invite command
     @commands.command()
     async def invite(self, ctx):
+        """
+        Get a link to invite the bot.
+        """
         embed = discord.Embed(
             title = f"Feel free to invite me!",
             url = "https://discordapp.com/api/oauth2/authorize?client_id=596532744218214402&permissions=8&scope=bot",
