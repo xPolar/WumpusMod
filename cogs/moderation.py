@@ -4,13 +4,14 @@ import discord
 from discord.ext import commands
 import json
 
-class moderation(commands.Cog):
+class Moderation(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
         self.errorcolor = 0xFF2B2B
         self.blurple = 0x7289DA
 
+    #On guild join set up mute stuff
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         role = discord.utils.get(guild.roles, name = "Muted")
@@ -20,6 +21,7 @@ class moderation(commands.Cog):
             for channel in guild.text_channels:
                 await channel.set_permissions(role, send_messages = False)
 
+    #On channel create set up mute stuff
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel):
         guild = channel.guild
@@ -29,57 +31,58 @@ class moderation(commands.Cog):
         else:
             await channel.set_permissions(role, send_messages = False)
 
+    #Purge command
     @commands.command(aliases = ["clear"])
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, amount = None):
         """
-        Delete a large amount of messages, up to 1000.
+        Clear a large amount of messages.
         """
         try:
             if amount == None:
                 amount = 10
             else:
                 amount = int(amount)
-                with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
-                    modlogs = json.load(f)
-                max_purge = 1000
-                if amount >= 1 and amount <= max_purge:
-                    message = ctx.message
-                    await ctx.channel.purge(limit = amount + 1)
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
+                modlogs = json.load(f)
+            max_purge = 1000
+            if amount >= 1 and amount <= max_purge:
+                message = ctx.message
+                await ctx.channel.purge(limit = amount + 1)
+                embed = discord.Embed(
+                    title = "Purge",
+                    description = f"Purged {amount} message(s)!",
+                    color = self.blurple
+                )
+                await ctx.send(embed = embed, delete_after = 5.0)
+                if str(ctx.message.guild.id) in modlogs:
+                    modlog = modlogs[str(ctx.message.guild.id)]
+                    modlog = discord.utils.get(ctx.guild.channels, id = modlog)
                     embed = discord.Embed(
                         title = "Purge",
-                        description = f"Purged {amount} message(s)!",
+                        description = f"{message.author.mention} has purged {amount} message(s) in {message.channel.mention}.",
+                        timestamp = datetime.datetime.utcnow(),
                         color = self.blurple
                     )
-                    await ctx.send(embed = embed, delete_after = 5.0)
-                    if str(ctx.message.guild.id) in modlogs:
-                        modlog = modlogs[str(ctx.message.guild.id)]
-                        modlog = discord.utils.get(ctx.guild.channels, id = modlog)
-                        embed = discord.Embed(
-                            title = "Purge",
-                            description = f"{message.author.mention} has purged {amount} message(s) in {message.channel.mention}.",
-                            timestamp = datetime.datetime.utcnow(),
-                            color = self.blurple
-                        )
-                        await modlog.send(embed = embed)
-                if amount < 1:
-                    embed = discord.Embed(
-                        title = "Purge Error",
-                        description = "You must purge more then 0 message!",
-                        color = self.errorcolor
-                    )
-                    await ctx.send(embed = embed)
-                if amount > max_purge:
-                    embed = discord.Embed(
-                        title = "Purge Error",
-                        description = "You must purge 1000 or less messages!",
-                        color = self.errorcolor
-                    )
-                    await ctx.send(embed = embed)
+                    await modlog.send(embed = embed)
+            if amount < 1:
+                embed = discord.Embed(
+                    title = "Purge Error",
+                    description = "You must purge more then 0 message!",
+                    color = self.errorcolor
+                )
+                await ctx.send(embed = embed)
+            if amount > max_purge:
+                embed = discord.Embed(
+                    title = "Purge Error",
+                    description = "You must purge 1000 or less messages!",
+                    color = self.errorcolor
+                )
+                await ctx.send(embed = embed)
         except:
             embed = discord.Embed(
                 title = "Purge Error",
-                description = "I could not perform this command, I do not have the correct permissions, make sure to give me all of [these](https://github.com/xPolar/WumpusMod/blob/master/README.md#required-permissions) permissions!",
+                description = "I could not perform this command, one of two things may have happend!\n- I do not have the correct permissions, make sure to give me all of [these](https://github.com/xPolar/WumpusMod/blob/master/README.md#required-permissions) permissions!\n- Role hiearchy has prevented me from doing this.",
                 color = self.errorcolor
             )
             await ctx.send(embed = embed)
@@ -94,6 +97,7 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
+    #Kick command
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, member : discord.Member = None, *, reason = None):
@@ -101,7 +105,7 @@ class moderation(commands.Cog):
         Kick a user from the server.
         """
         try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             if member == None:
                 embed = discord.Embed(
@@ -173,6 +177,7 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
+    #Ban command
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, member : discord.Member = None, *, reason = None):
@@ -180,7 +185,7 @@ class moderation(commands.Cog):
         Ban a user from the server.
         """
         try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             if member == None:
                 embed = discord.Embed(
@@ -242,14 +247,15 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
+    #Unban command
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def unban(self, ctx, *, member : discord.User = None):
         """
-        Unban a user from the server.
+        Unban a user from the server
         """
         try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             if member == None:
                 embed = discord.Embed(
@@ -284,19 +290,20 @@ class moderation(commands.Cog):
         except:
             embed = discord.Embed(
                 title = "Unban Error",
-                description = "I could not perform this command, I do not have the correct permissions, make sure to give me all of [these](https://github.com/xPolar/WumpusMod/blob/master/README.md#required-permissions) permissions!",
+                description = "I could not perform this command, one of two things may have happend!\n- I do not have the correct permissions, make sure to give me all of [these](https://github.com/xPolar/WumpusMod/blob/master/README.md#required-permissions) permissions!\n- Role hiearchy has prevented me from doing this.",
                 color = self.errorcolor
             )
             await ctx.send(embed = embed)
 
+    #Mute command
     @commands.command()
     @commands.has_permissions(manage_roles = True)
     async def mute(self, ctx, member : discord.Member = None, time = None, *, reason = None):
         """
-        Mutes a user so they can't talk.
+        Mute a user so they can't talk.
         """
         try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             if member == None:
                 embed = discord.Embed(
@@ -314,7 +321,7 @@ class moderation(commands.Cog):
                     )
                     await ctx.send(embed = embed, delete_after = 5.0)
                 else:
-                    with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "r") as f:
+                    with open(r"PATHHERE\Data\mute_roles.json", "r") as f:
                         muteroles = json.load(f)
                     if str(ctx.message.guild.id) in muteroles:
                         muterole = muteroles[str(ctx.message.guild.id)]
@@ -470,10 +477,10 @@ class moderation(commands.Cog):
     @commands.has_permissions(manage_roles = True)
     async def unmute(self, ctx, member : discord.Member = None, *, reason = None):
         """
-        Unmutes a user so they can talk.
+        Unmute a user so they can talk.
         """
         try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             if member == None:
                 embed = discord.Embed(
@@ -483,7 +490,7 @@ class moderation(commands.Cog):
                 )
                 await ctx.send(embed = embed)
             else:
-                with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "r") as f:
+                with open(r"PATHHERE\Data\muteroles.json", "r") as f:
                     muteroles = json.load(f)
                 if str(ctx.message.guild.id) in muteroles:
                     muterole = muteroles[str(ctx.message.guild.id)]
@@ -547,66 +554,58 @@ class moderation(commands.Cog):
         """
         Delete all the messages in a channel.
         """
-        try:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
-                modlogs = json.load(f)
-            if reason == None:
-                position = ctx.message.channel.position
-                channel = await ctx.message.channel.clone(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator}")
-                await channel.edit(position = position)
-                await ctx.message.channel.delete(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator}")
-                embed = discord.Embed(
-                    title = "Nuke",
-                    description = f"Nuke done by {ctx.message.author.mention}",
-                    color = self.blurple
-                )
-                embed.set_image(url = "https://imgur.com/LIyGeCR.gif")
-                await channel.send(embed = embed, delete_after = 120)
-                if str(ctx.message.guild.id) in modlogs:
-                    modlog = modlogs[str(ctx.message.guild.id)]
-                    modlog = discord.utils.get(ctx.guild.text_channels, id = modlog)
-                    embed = discord.Embed(
-                        title = "Nuke",
-                        description = f"{channel.mention} has been nuked by {ctx.message.author.mention}.",
-                        timestamp = datetime.datetime.utcnow(),
-                        color = self.blurple
-                    )
-                    await modlog.send(embed = embed)
-            else:
-                position = ctx.message.channel.position
-                channel = await ctx.message.channel.clone(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator} for {reason}")
-                await channel.edit(position = position)
-                await ctx.message.channel.delete(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator} for {reason}")
-                embed = discord.Embed(
-                    title = "Nuke",
-                    description = f"Nuke done by {ctx.message.author.mention} for {reason}",
-                    color = self.blurple
-                )
-                embed.set_image(url = "https://imgur.com/LIyGeCR.gif")
-                await channel.send(embed = embed, delete_after = 120)
-                if str(ctx.message.guild.id) in modlogs:
-                    modlog = modlogs[str(ctx.message.guild.id)]
-                    modlog = discord.utils.get(ctx.guild.text_channels, id = modlog)
-                    embed = discord.Embed(
-                        title = "Nuke",
-                        description = f"{channel.mention} has been nuked by {ctx.message.author.mention} for {reason}.",
-                        timestamp = datetime.datetime.utcnow(),
-                        color = self.blurple
-                    )
-                    await modlog.send(embed = embed)
-        except:
+        with open(r"PATHHERE\Data\modlogs.json", "r") as f:
+            modlogs = json.load(f)
+        if reason == None:
+            position = ctx.message.channel.position
+            channel = await ctx.message.channel.clone(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator}")
+            await channel.edit(position = position)
+            await ctx.message.channel.delete(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator}")
             embed = discord.Embed(
-                title = "Nuke Error",
-                description = "I could not perform this command, I do not have the correct permissions, make sure to give me all of [these](https://github.com/xPolar/WumpusMod/blob/master/README.md#required-permissions) permissions!",
-                color = self.errorcolor
+                title = "Nuke",
+                description = f"Nuke done by {ctx.message.author.mention}",
+                color = self.blurple
             )
-            await ctx.send(embed = embed)
+            embed.set_image(url = "https://imgur.com/LIyGeCR.gif")
+            await channel.send(embed = embed, delete_after = 120)
+            if str(ctx.message.guild.id) in modlogs:
+                modlog = modlogs[str(ctx.message.guild.id)]
+                modlog = discord.utils.get(ctx.guild.text_channels, id = modlog)
+                embed = discord.Embed(
+                    title = "Nuke",
+                    description = f"{channel.mention} has been nuked by {ctx.message.author.mention}.",
+                    timestamp = datetime.datetime.utcnow(),
+                    color = self.blurple
+                )
+                await modlog.send(embed = embed)
+        else:
+            position = ctx.message.channel.position
+            channel = await ctx.message.channel.clone(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator} for {reason}")
+            await channel.edit(position = position)
+            await ctx.message.channel.delete(reason = f"Nuke done by {ctx.message.author.name}#{ctx.message.author.discriminator} for {reason}")
+            embed = discord.Embed(
+                title = "Nuke",
+                description = f"Nuke done by {ctx.message.author.mention} for {reason}",
+                color = self.blurple
+            )
+            embed.set_image(url = "https://imgur.com/LIyGeCR.gif")
+            await channel.send(embed = embed, delete_after = 120)
+            if str(ctx.message.guild.id) in modlogs:
+                modlog = modlogs[str(ctx.message.guild.id)]
+                modlog = discord.utils.get(ctx.guild.text_channels, id = modlog)
+                embed = discord.Embed(
+                    title = "Nuke",
+                    description = f"{channel.mention} has been nuked by {ctx.message.author.mention} for {reason}.",
+                    timestamp = datetime.datetime.utcnow(),
+                    color = self.blurple
+                )
+                await modlog.send(embed = embed)
 
     @commands.command()
     @commands.has_permissions(manage_messages = True)
     async def modlog(self, ctx, channel : discord.TextChannel = None):
         """
-        Set the modlog.
+        Set which channel moderation logs get sent to.
         """
         if channel == None:
             embed = discord.Embed(
@@ -616,7 +615,7 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
         else:
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "r") as f:
                 modlogs = json.load(f)
             modlogs[str(ctx.guild.id)] = channel.id
             embed = discord.Embed(
@@ -626,7 +625,7 @@ class moderation(commands.Cog):
             )
             await ctx.send(embed = embed)
 
-            with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "w") as f:
+            with open(r"PATHHERE\Data\modlogs.json", "w") as f:
                 json.dump(modlogs, f, indent = 4)
 
     @commands.command()
@@ -635,39 +634,25 @@ class moderation(commands.Cog):
         """
         Set the servers mute role.
         """
-        with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "r") as f:
-            muteroles = json.load(f)
         if role == None:
             embed = discord.Embed(
-                title = "Muterole Error",
-                description = "Please specify a role!",
+                title = "Mute Role Error",
+                description = "Please provide a role!",
                 color = self.errorcolor
             )
             await ctx.send(embed = embed)
         else:
-            muteroles[str(ctx.guild.id)] = role.id
+            with open(r"PATHHERE\Data\mute_roles.json", "r") as f:
+                mute_roles = json.load(f)
+            mute_roles[str(ctx.guild.id)] = role.id
             embed = discord.Embed(
-                title = "Muterole",
+                title = "Mute Role",
                 description = f"{ctx.message.guild}'s mute role is  now {role.mention}",
                 color = self.blurple
             )
             await ctx.send(embed = embed)
-
-            with open(r"PATHHERE\WumpusMod\Data\muteroles.json", "w") as f:
-                json.dump(muteroles, f, indent = 4)
-
-            for channel in ctx.guild.text_channels:
-                await channel.set_permissions(role, send_messages = False)
-
-    @muterole.error
-    async def supportrole_error(self, ctx, error):
-        if isinstance(error, commands.MissingPermissions):
-            embed = discord.Embed(
-                title = "Missing Permissions",
-                description = "You are missing the **Manage Server** permission!",
-                color = self.errorcolor
-            )
-            await ctx.send(embed = embed)
+            with open(r"PATHHERE\Data\mute_roles.json", "w") as f:
+                json.dump(mute_roles, f, indent = 4)
 
 def setup(bot):
-    bot.add_cog(moderation(bot))
+    bot.add_cog(Moderation(bot))
