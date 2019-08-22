@@ -39,6 +39,7 @@ class moderation(commands.Cog):
             if amount == None:
                 amount = 10
             else:
+                amount = int(amount)
                 with open(r"PATHHERE\WumpusMod\Data\modlogs.json", "r") as f:
                     modlogs = json.load(f)
                 max_purge = 1000
