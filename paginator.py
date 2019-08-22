@@ -57,7 +57,7 @@ class Pages:
             ('\N{BLACK RIGHT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}', self.last_page),
            # ('\N{INPUT SYMBOL FOR NUMBERS}', self.numbered_page),
             ('\N{BLACK SQUARE FOR STOP}', self.stop_pages),
-           # ('\N{INFORMATION SOURCE}', self.show_help),
+            ('\N{INFORMATION SOURCE}', self.show_help),
         ]
 
         if ctx.guild is not None:
@@ -129,19 +129,19 @@ class Pages:
             await self.show_page(page)
 
     async def first_page(self):
-        """goes to the first page"""
+        """Goes to the first page"""
         await self.show_page(1)
 
     async def last_page(self):
-        """goes to the last page"""
+        """Goes to the last page"""
         await self.show_page(self.maximum_pages)
 
     async def next_page(self):
-        """goes to the next page"""
+        """Goes to the next page"""
         await self.checked_show_page(self.current_page + 1)
 
     async def previous_page(self):
-        """goes to the previous page"""
+        """Goes to the previous page"""
         await self.checked_show_page(self.current_page - 1)
 
     async def show_current_page(self):
@@ -178,7 +178,7 @@ class Pages:
             pass
 
     async def show_help(self):
-        """shows this message"""
+        """Shows this message"""
         messages = ['Welcome to the interactive paginator!\n']
         messages.append('This interactively allows you to see pages of text by navigating with '
                         'reactions. They are as follows:\n')
@@ -198,7 +198,7 @@ class Pages:
         self.bot.loop.create_task(go_back_to_current_page())
 
     async def stop_pages(self):
-        """stops the interactive pagination session"""
+        """Stops the interactive pagination session"""
         await self.message.delete()
         self.paginating = False
 
