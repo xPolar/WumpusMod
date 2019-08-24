@@ -13,8 +13,6 @@
 
 - [Support Server](https://discord.gg/gkAKatd)
 
-- [Wiki](https://github.com/xPolar/WumpusMod/wiki/Landing-Page)
-
 # Commands
 WumpusMod's default prefix is `w!`
 
